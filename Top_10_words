@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 data_str = ''
 data_list_6 = []
@@ -8,19 +7,19 @@ rated_words = {}
 with open("files/newsafr.json", encoding="utf-8") as data:
     json_data = json.load(data)
     for news in json_data["rss"]["channel"]["items"]:
-      data_str += (news['description']).lower()
+      data_str += (news['description'])
 
 
-def get_list_six_or_longer(x):
-  data_list = x.split()
+def get_list_six_or_longer(symb):
+  data_list = symb.split()
   for item in data_list:
     if len(item)  >= 6:
       data_list_6.append(item)
   return data_list_6
 
 
-def rate_words(x):
-  for item in x:
+def rate_words(symb):
+  for item in symb:
     if item in rated_words:
       rated_words[item] += 1
     else:
@@ -28,8 +27,8 @@ def rate_words(x):
   return rated_words
 
 
-def get_top10(x):
-  list_dct = list(x.items())
+def get_top10(symb):
+  list_dct = list(symb.items())
   list_dct.sort(key=lambda i: i[1], reverse=True)
   counter = 0
   for i in list_dct:
