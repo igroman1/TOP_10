@@ -1,42 +1,37 @@
 import json
+from pprint import pprint
 
 data_str = ''
-data_list_6 = []
-rated_words = {}
 
 with open("files/newsafr.json", encoding="utf-8") as data:
     json_data = json.load(data)
     for news in json_data["rss"]["channel"]["items"]:
-      data_str += (news['description'])
+      data_str += (news['description']).lower() #lower() - для исключения влияния регистра на рейтинг
 
 
-def get_list_six_or_longer(symb):
-  data_list = symb.split()
+def get_top10_words(x):
+
+  data_list = x.split()  # преобразуем строку в список
+  data_list_6 = []  # создаем список куда будем складывать слова 6 и более букв
   for item in data_list:
     if len(item)  >= 6:
       data_list_6.append(item)
-  return data_list_6
 
-
-def rate_words(symb):
-  for item in symb:
+  rated_words = dict()  # создаем словарь где будем формировать рейтинг 'слово':'сколько раз встречалось'
+  for item in data_list_6:
     if item in rated_words:
       rated_words[item] += 1
     else:
       rated_words[item] = 1
-  return rated_words
 
+  list_dct = list(rated_words.items())  # создаем список для того, чтобы отсортироваться по значению "словаря"
 
-def get_top10(symb):
-  list_dct = list(symb.items())
+  
   list_dct.sort(key=lambda i: i[1], reverse=True)
   counter = 0
-  for i in list_dct:
+  for i in list_dct:  # итерируемся по списку, чтобы вывести топ10 слов
     if counter < 10:
       print(i[0], ':', i[1])
     counter += 1
 
-
-get_list_six_or_longer(data_str)
-rate_words(data_list_6)
-get_top10(rated_words)
+get_top10_words(data_str)
